@@ -3,6 +3,11 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import time
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import string
+
 
 # Set the title of the web app
 st.title('Singapore Job Market Insights')
@@ -51,23 +56,37 @@ def display_dashboard_page():
     st.title('Dashboard')
     st.write('Visualisations and insights about the Singapore job market.')
 
-    st.header('Job Trends')
-    st.subheader('Explore the latest job trends in Singapore')
+    st.header('Top 10 Companies Hiring')
+    st.subheader('Discover the companies with the highest number of job listings in the Singapore job market')
 
-    # wordcloud = WordCloud(width=800, height=400).generate(' '.join(data['job title']))
-    # plt.figure(figsize=(10, 5))
-    # plt.imshow(wordcloud, interpolation='bilinear')
-    # plt.axis('off')
-    # st.pyplot(plt)
+    plt.figure(figsize=(12, 8))
+    data['company'].value_counts().head(10).plot(kind='bar', color='lightblue')
+    plt.xlabel('Company')
+    plt.ylabel('Frequency')
+    plt.title('Top 10 Companies Hiring')
+    st.pyplot(plt)
 
-    st.header('Skill Demand')
-    st.subheader('Discover in-demand skills across industries')
+    st.header('Job Description Insights')
+    st.subheader('Discover prevalent keywords used by employers for job descriptions')
 
-    # wordcloud = WordCloud(width=800, height=400).generate(' '.join(data['description']))
-    # plt.figure(figsize=(10, 5))
-    # plt.imshow(wordcloud, interpolation='bilinear')
-    # plt.axis('off')
-    # st.pyplot(plt)
+    # Convert all job descriptions to lowercase
+    data['description'] = data['description'].astype(str).str.lower()
+
+    # Tokenization and removal of punctuation
+    data['description'] = data['description'].apply(lambda x: ' '.join(word_tokenize(x.translate(str.maketrans('', '', string.punctuation)))))
+
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    data['description'] = data['description'].apply(lambda x: ' '.join([word for word in word_tokenize(x) if word not in stop_words]))
+
+    # Concatenate all job descriptions into a single string
+    concatenated_descriptions = ' '.join(data['description'])
+
+    wordcloud = WordCloud(width=800, height=400).generate(concatenated_descriptions)
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    st.pyplot(plt)
 
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
@@ -86,10 +105,10 @@ def display_dashboard_page():
     data['salary range'].value_counts().head(10).plot(kind='bar', color='lightblue')
     plt.xlabel('Salary Range')
     plt.ylabel('Frequency')
-    plt.title('Top 10 Salary Range')
+    plt.title('Top 10 Common Salary Range')
     st.pyplot(plt)
 
-    
+
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
 page = st.sidebar.radio('Navigation', ['Job Recommendation', 'Dashboard'])
