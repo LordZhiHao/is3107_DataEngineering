@@ -82,13 +82,14 @@ def display_dashboard_page():
     st.header('Salary Ranges')
     st.subheader('Explore salary ranges across different industries')
 
-    # plt.figure(figsize=(8, 5))
-    # plt.hist(data['salary range'], bins=10, color='skyblue', edgecolor='black')
-    # plt.xlabel('Salary Range')
-    # plt.ylabel('Frequency')
-    # plt.title('Histogram of Salary Ranges')
-    # st.pyplot(plt)
+    plt.figure(figsize=(12, 8))
+    data['salary range'].value_counts().head(10).plot(kind='bar', color='lightblue')
+    plt.xlabel('Salary Range')
+    plt.ylabel('Frequency')
+    plt.title('Top 10 Salary Range')
+    st.pyplot(plt)
 
+    
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
 page = st.sidebar.radio('Navigation', ['Job Recommendation', 'Dashboard'])
