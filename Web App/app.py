@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
 import time
 
 # Set the title of the web app
@@ -8,6 +11,15 @@ st.title('Singapore Job Market Insights')
 st.write('Welcome to the Singapore Job Market Insights Web Application! Get personalised job recommendations and explore key trends, skill demand, and salary ranges in the Singapore job market.')
 
 st.divider()
+
+# Function to read CSV data
+def read_csv_data(file_path):
+    data = pd.read_csv(file_path)
+    return data
+
+csv_file_path = r"C:\Users\jorda\Downloads\IS3107\is3107_DataEngineering\consolidated.csv"
+
+data = read_csv_data(csv_file_path)
 
 # Function for displaying job recommendation page
 def display_job_recommendation_page():
@@ -42,26 +54,40 @@ def display_dashboard_page():
     st.header('Job Trends')
     st.subheader('Explore the latest job trends in Singapore')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    # wordcloud = WordCloud(width=800, height=400).generate(' '.join(data['job title']))
+    # plt.figure(figsize=(10, 5))
+    # plt.imshow(wordcloud, interpolation='bilinear')
+    # plt.axis('off')
+    # st.pyplot(plt)
 
     st.header('Skill Demand')
     st.subheader('Discover in-demand skills across industries')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    # wordcloud = WordCloud(width=800, height=400).generate(' '.join(data['description']))
+    # plt.figure(figsize=(10, 5))
+    # plt.imshow(wordcloud, interpolation='bilinear')
+    # plt.axis('off')
+    # st.pyplot(plt)
 
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    plt.figure(figsize=(12, 8))
+    data['job title'].value_counts().head(15).plot(kind='bar', color='lightblue')
+    plt.xlabel('Job Title')
+    plt.ylabel('Frequency')
+    plt.title('Top 15 Job Titles')
+    st.pyplot(plt)
 
     st.header('Salary Ranges')
     st.subheader('Explore salary ranges across different industries')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    # plt.figure(figsize=(8, 5))
+    # plt.hist(data['salary range'], bins=10, color='skyblue', edgecolor='black')
+    # plt.xlabel('Salary Range')
+    # plt.ylabel('Frequency')
+    # plt.title('Histogram of Salary Ranges')
+    # st.pyplot(plt)
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
@@ -73,6 +99,7 @@ st.sidebar.write("""
                    
                  This serves as a valuable resource for job seekers, hiring managers, and career planners, providing them with real-time market dynamics to make informed decisions.
                  """)
+
 
 # Display selected page
 if page == 'Job Recommendation':
