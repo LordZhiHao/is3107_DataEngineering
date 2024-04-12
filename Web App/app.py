@@ -67,27 +67,27 @@ def display_dashboard_page():
     plt.title('Top 10 Companies Hiring')
     st.pyplot(plt)
 
-    st.header('Job Description Insights')
-    st.subheader('Discover prevalent keywords used by employers for job descriptions')
+    # st.header('Job Description Insights')
+    # st.subheader('Discover prevalent keywords used by employers for job descriptions')
 
-    # Convert all job descriptions to lowercase
-    data['description'] = data['description'].astype(str).str.lower()
+    # # Convert all job descriptions to lowercase
+    # data['description'] = data['description'].astype(str).str.lower()
 
-    # Tokenization and removal of punctuation
-    data['description'] = data['description'].apply(lambda x: ' '.join(word_tokenize(x.translate(str.maketrans('', '', string.punctuation)))))
+    # # Tokenization and removal of punctuation
+    # data['description'] = data['description'].apply(lambda x: ' '.join(word_tokenize(x.translate(str.maketrans('', '', string.punctuation)))))
 
-    # Remove stopwords
-    stop_words = set(stopwords.words('english'))
-    data['description'] = data['description'].apply(lambda x: ' '.join([word for word in word_tokenize(x) if word not in stop_words]))
+    # # Remove stopwords
+    # stop_words = set(stopwords.words('english'))
+    # data['description'] = data['description'].apply(lambda x: ' '.join([word for word in word_tokenize(x) if word not in stop_words]))
 
-    # Concatenate all job descriptions into a single string
-    concatenated_descriptions = ' '.join(data['description'])
+    # # Concatenate all job descriptions into a single string
+    # concatenated_descriptions = ' '.join(data['description'])
 
-    wordcloud = WordCloud(width=800, height=400).generate(concatenated_descriptions)
-    plt.figure(figsize=(10, 5))
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis('off')
-    st.pyplot(plt)
+    # wordcloud = WordCloud(width=800, height=400).generate(concatenated_descriptions)
+    # plt.figure(figsize=(10, 5))
+    # plt.imshow(wordcloud, interpolation='bilinear')
+    # plt.axis('off')
+    # st.pyplot(plt)
 
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
