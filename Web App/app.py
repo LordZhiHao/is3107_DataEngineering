@@ -67,19 +67,6 @@ def display_dashboard_page():
     plt.title('Top 10 Companies Hiring')
     st.pyplot(plt)
 
-    plt.figure(figsize=(10, 10))
-    data['company'].value_counts().head(10).plot(kind='pie', autopct='%1.1f%%', startangle=140, wedgeprops=dict(width=0.4))
-    plt.axis('equal')
-    plt.title('Top 10 Companies Hiring')
-    st.pyplot(plt)
-
-    plt.figure(figsize=(10, 10))
-    data['company'].value_counts().head(10).plot(kind='pie', autopct='%1.1f%%', startangle=140)
-    plt.axis('equal')
-    plt.title('Top 10 Companies Hiring')
-    st.pyplot(plt)
-
-
     st.header('Job Description Insights')
     st.subheader('Discover prevalent keywords used by employers for job descriptions')
 
