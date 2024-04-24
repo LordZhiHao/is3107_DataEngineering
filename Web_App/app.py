@@ -3,7 +3,9 @@ import time
 import pandas as pd
 import psycopg2
 import matplotlib.pyplot as plt 
-import altair as alt 
+import altair as alt
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Set the title of the web app
 st.title('Singapore Job Market Insights')
@@ -42,9 +44,21 @@ def map_company_name(name):
         'PERSOLKELLY SINGAPORE PTE. LTD.': 'PERSOLKELLY',
         'PERSOLKELLY Singapore': 'PERSOLKELLY'
     }
-    return company_mapping.get(name, name) 
+    return company_mapping.get(name, name)
 
 jobs_data = load_data('database.csv')
+
+# Text preprocessing
+tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+tfidf_matrix = tfidf_vectorizer.fit_transform(jobs_data['description'])
+
+# Function to recommend jobs based on input text
+def recommend_jobs(input_text, df, tfidf_matrix, tfidf_vectorizer, top_n=3):
+    input_vector = tfidf_vectorizer.transform([input_text])
+    cosine_similarities = cosine_similarity(input_vector, tfidf_matrix).flatten()
+    related_jobs_indices = cosine_similarities.argsort()[:-top_n-1:-1]
+    recommended_jobs = df.iloc[related_jobs_indices]
+    return recommended_jobs
 
 # Function for displaying job recommendation page
 def display_job_recommendation_page():
@@ -57,21 +71,12 @@ def display_job_recommendation_page():
     if st.button("Submit"):
         # Display status indicator while retrieving job recommendations
         with st.spinner("Retrieving job recommendations..."):
-            # Load data from the database
-            job_data = load_data('database.csv')
-
-            # Simulate time-consuming process
-            time.sleep(5)
-
-            # Run NLP and ML models to process user input and return job results
-            # ...
-
+            # Run ML model to process user input and return job results
+            recommended_jobs = recommend_jobs(resume_details, jobs_data, tfidf_matrix, tfidf_vectorizer)
 
             # Display job recommendations to the user
             st.write("Job recommendations retrieved successfully!")
-
-            # Clear the text area after submit button is clicked
-            # ...
+            st.write(recommended_jobs) 
 
 
 # Function for displaying dashboard page
@@ -153,6 +158,29 @@ def display_dashboard_page():
     filtered_data = filtered_data[filtered_data['job_title'] == selected_job_title]
 
     st.write(filtered_data)
+
+    st.divider()
+
+    st.header('Comparison Section')
+    st.subheader('Compare salary information for common job titles across different companies')
+
+    # Preprocess and map company names
+    job_data['company'] = job_data['company'].apply(map_company_name)
+
+    # Create multi-select dropdown for selecting companies
+    selected_companies = st.multiselect('Select Companies', job_data['company'].unique())
+
+    if len(selected_companies) > 0:
+        # Filter data based on selected companies
+        filtered_data = job_data[job_data['company'].isin(selected_companies)]
+
+        # Group data by job title and concatenate salary ranges for each job title
+        salary_ranges_by_job_title = filtered_data.groupby('job_title')['salary_range'].apply(lambda x: ', '.join(x)).reset_index()
+
+        # Display salary ranges for each job title
+        st.write(salary_ranges_by_job_title)
+    else:
+        st.write('Please select at least one company.')
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
