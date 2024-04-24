@@ -62,22 +62,22 @@ def extract_transform_load():
 
         # To indicate the listing date from posted date information
         # Convert text to datetime for manipulation 
-        data['Today Date'] = pd.to_datetime(data['Today Date'], format='%d/%m/%Y')
+        # data['Today Date'] = pd.to_datetime(data['Today Date'], format='%dd/%mm/%YYYY')
 
-        # Convert 'Today Date' to string with 'day/month/year' format
-        data['Today Date'] = data['Today Date'].dt.strftime('%d/%m/%Y')
+        # # Convert 'Today Date' to string with 'day/month/year' format
+        # data['Today Date'] = data['Today Date'].dt.strftime('%dd/%mm/%YYYY')
 
-        for index, row in data.iterrows():
-            if not re.search(r'\d', row['Posted Date Raw']):
-                data.loc[index, 'Job Posting Date'] = row['Today Date']
-            else:
-                days = re.findall(r'\d+', row['Posted Date Raw'])
-                days_int = sum(map(int, days))
-                listing_date = pd.to_datetime(row['Today Date'], format='%d/%m/%Y') - pd.DateOffset(days=days_int)
-                data.loc[index, 'Job Posting Date'] = listing_date.strftime('%d/%m/%Y')  # Change the format here
+        # for index, row in data.iterrows():
+        #     if not re.search(r'\d', row['Posted Date Raw']):
+        #         data.loc[index, 'Job Posting Date'] = row['Today Date']
+        #     else:
+        #         days = re.findall(r'\d+', row['Posted Date Raw'])
+        #         days_int = sum(map(int, days))
+        #         listing_date = pd.to_datetime(row['Today Date'], format='%dd/%mm/%YYYY') - pd.DateOffset(days=days_int)
+        #         data.loc[index, 'Job Posting Date'] = listing_date.strftime('%dd/%mm/%YYYY')  # Change the format here
 
-        # Convert 'Job Posting Date' column to datetime dtype
-        data['Job Posting Date'] = pd.to_datetime(data['Job Posting Date'], format='%d/%m/%Y')
+        # # Convert 'Job Posting Date' column to datetime dtype
+        # data['Job Posting Date'] = pd.to_datetime(data['Job Posting Date'], format='%dd/%mm/%YYYY')
 
         new_file_path = 'indeed_jobs_modified.csv'
         data.to_csv(new_file_path, index=False)
@@ -95,10 +95,43 @@ def extract_transform_load():
         return file_path
     
     @task
-    def extract_mycareerfuture_jobs():
+    def clean_jobstreet_jobs(jobstreet_path):
+        
+        data = pd.read_csv(jobstreet_path, encoding='utf-8')
+
+        data['teasers'] = data['teasers'].apply(lambda x: re.sub(r'[^\x00-\x7F]+', ' ', x))
+
+        data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')  # Replace 'p.m.' with 'per month'
+        data['salaries'] = data['salaries'].str.replace('[^\x00-\x7F]+', '-')  # Remove special characters
+        data['salaries'] = data['salaries'].apply(lambda x: '$' + str(x) if str(x).isdigit() else x)  # Add $ symbol to numeric values
+
+        data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
+
+        new_file_path = 'jobstreet_jobs_modified.csv'
+        data.to_csv(new_file_path, index=False, encoding='utf-8')
+
+        return new_file_path
+    
+    @task
+    def extract_mycareerfuture_jobs_1():
         file_path = "MyCareersFuture_WebScraping/jobs_ai.csv"
         return file_path
+
+    @task
+    def extract_mycareerfuture_jobs_2():
+        file_path = "MyCareersFuture_WebScraping/jobs_data-analytics.csv"
+        return file_path
     
+    @task
+    def extract_mycareerfuture_jobs_3():
+        file_path = "MyCareersFuture_WebScraping/jobs_data-science.csv"
+        return file_path
+    
+    @task
+    def extract_mycareerfuture_jobs_4():
+        file_path = "MyCareersFuture_WebScraping/jobs_ml.csv"
+        return file_path
+
     @task
     def clean_mycareerfuture_jobs(mycareerfuture_url):
         data = pd.read_csv(mycareerfuture_url)
@@ -110,10 +143,95 @@ def extract_transform_load():
         return new_file_path
 
     @task
-    def extract_linkedin_jobs():
-        file_path = "LinkedIn_WebScraping/linkedin_jobs.csv"
-        return file_path
+    def consolidate_mycareerfuture_jobs(mycareerfuture_filepath1, mycareerfuture_filepath2, mycareerfuture_filepath3, mycareerfuture_filepath4):
+        # read the files
+        df1 = pd.read_csv(mycareerfuture_filepath1)
+        df2 = pd.read_csv(mycareerfuture_filepath2)
+        df3 = pd.read_csv(mycareerfuture_filepath3)
+        df4 = pd.read_csv(mycareerfuture_filepath4)
+        
+        mycareerfuture_jobs = pd.DataFrame(columns=df1.columns)
+
+        # perform concatenation
+        mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df1], ignore_index=True)
+        mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df2], ignore_index=True)
+        mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df3], ignore_index=True)
+        mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df4], ignore_index=True)
+
+        # proof check for duplicates
+        mycareerfuture_jobs = mycareerfuture_jobs.drop_duplicates()
+
+        # return new file path
+        new_file_path = '{}_modified.csv'.format('mycareerfuture_jobs')
+        mycareerfuture_jobs.to_csv(new_file_path, index=False)
+        return new_file_path
+
+    @task
+    def clean_linkedin_jobs(linkedin_filepath):
+        # read file
+        data = pd.read_csv(linkedin_filepath)
+
+        # drop unused columns
+        data = data.drop(['Unnamed: 0', 'Job_ID', 'posted-time-ago', 'nb_candidats', 'scraping_date', 'posted_date'], axis=1)
+        
+        # perform splitting and checking for unexpected encodings
+        data['Job_txt'] = data['Job_txt'].apply(lambda x : x.split('Report this job')[1].replace("â€™", "'"))
+        data['Job_txt'] = data['Job_txt'].apply(lambda x : x.split('Show more Show less')[0])
+
+        # drop unsuccessful retrievals
+        data = data.dropna()
+        return data
     
+    @task
+    def consolidate_linkedin_jobs(df1, df2, df3, df4, df5, df6):
+        linkedin_jobs = pd.DataFrame(columns=df1.columns)
+
+        # perform concatenation
+        linkedin_jobs = pd.concat([linkedin_jobs, df1], ignore_index=True)
+        linkedin_jobs = pd.concat([linkedin_jobs, df2], ignore_index=True)
+        linkedin_jobs = pd.concat([linkedin_jobs, df3], ignore_index=True)
+        linkedin_jobs = pd.concat([linkedin_jobs, df4], ignore_index=True)
+        linkedin_jobs = pd.concat([linkedin_jobs, df5], ignore_index=True)
+        linkedin_jobs = pd.concat([linkedin_jobs, df6], ignore_index=True)
+
+        # proof check for duplicates
+        linkedin_jobs = linkedin_jobs.drop_duplicates()
+
+        # return new file path
+        new_file_path = '{}_modified.csv'.format('linkedin_jobs')
+        linkedin_jobs.to_csv(new_file_path, index=False)
+        return new_file_path
+
+    @task
+    def extract_linkedin_jobs_1():
+        file_path = "LinkedIn_WebScraping/AIdeveloper_scraped.csv"
+        return file_path        
+    
+    @task
+    def extract_linkedin_jobs_2():
+        file_path = "LinkedIn_WebScraping/dataAnalyst_scraped.csv"
+        return file_path
+
+    @task
+    def extract_linkedin_jobs_3():
+        file_path = "LinkedIn_WebScraping/dataengineer_scraped.csv"
+        return file_path 
+
+    @task
+    def extract_linkedin_jobs_4():
+        file_path = "LinkedIn_WebScraping/dataScientist_scraped.csv"
+        return file_path  
+    
+    @task
+    def extract_linkedin_jobs_5():
+        file_path = "LinkedIn_WebScraping/machineLearningEngineer_scraped.csv"
+        return file_path 
+    
+    @task
+    def extract_linkedin_jobs_6():
+        file_path = "LinkedIn_WebScraping/softwareengineer_scraped.csv"
+        return file_path 
+
     @task
     def rename_and_filter_columns(df_file_path):
 
@@ -202,19 +320,37 @@ def extract_transform_load():
     internsg_jobs = extract_internsg_jobs()
 
     jobstreet_jobs = extract_jobstreet_jobs()
+    jobstreet_jobs = clean_jobstreet_jobs(jobstreet_jobs)
 
-    mycareerfuture_jobs =  extract_mycareerfuture_jobs()
-    mycareerfuture_jobs = clean_mycareerfuture_jobs(mycareerfuture_jobs)
+    mycareerfuture_jobs_1 =  extract_mycareerfuture_jobs_1()
+    mycareerfuture_jobs_2 =  extract_mycareerfuture_jobs_2()
+    mycareerfuture_jobs_3 =  extract_mycareerfuture_jobs_3()
+    mycareerfuture_jobs_4 =  extract_mycareerfuture_jobs_4()
+    mycareerfuture_jobs_1 = clean_mycareerfuture_jobs(mycareerfuture_jobs_1)
+    mycareerfuture_jobs_2 = clean_mycareerfuture_jobs(mycareerfuture_jobs_2)
+    mycareerfuture_jobs_3 = clean_mycareerfuture_jobs(mycareerfuture_jobs_3)
+    mycareerfuture_jobs_4 = clean_mycareerfuture_jobs(mycareerfuture_jobs_4)
+    mycareerfuture_jobs = consolidate_mycareerfuture_jobs(mycareerfuture_jobs_1, mycareerfuture_jobs_2, mycareerfuture_jobs_3, mycareerfuture_jobs_4)
 
-    linkedin_jobs = extract_linkedin_jobs()
-
+    linkedin_jobs_1 = extract_linkedin_jobs_1()
+    linkedin_jobs_2 = extract_linkedin_jobs_2()
+    linkedin_jobs_3 = extract_linkedin_jobs_3()
+    linkedin_jobs_4 = extract_linkedin_jobs_4()
+    linkedin_jobs_5 = extract_linkedin_jobs_5()
+    linkedin_jobs_6 = extract_linkedin_jobs_6()
+    linkedin_jobs_1 = clean_linkedin_jobs(linkedin_jobs_1)
+    linkedin_jobs_2 = clean_linkedin_jobs(linkedin_jobs_2)
+    linkedin_jobs_3 = clean_linkedin_jobs(linkedin_jobs_3)
+    linkedin_jobs_4 = clean_linkedin_jobs(linkedin_jobs_4) 
+    linkedin_jobs_5 = clean_linkedin_jobs(linkedin_jobs_5)
+    linkedin_jobs_6 = clean_linkedin_jobs(linkedin_jobs_6)
+    linkedin_jobs = consolidate_linkedin_jobs(linkedin_jobs_1, linkedin_jobs_2, linkedin_jobs_3, linkedin_jobs_4, linkedin_jobs_5, linkedin_jobs_6)
 
     new_indeed_jobs = rename_and_filter_columns(indeed_jobs)
     new_internsg_jobs =  rename_and_filter_columns(internsg_jobs)
     new_jobstreet_jobs = rename_and_filter_columns(jobstreet_jobs)
     new_mycareerfuture = rename_and_filter_columns(mycareerfuture_jobs)
     new_linkedin = rename_and_filter_columns(linkedin_jobs)
-
 
     consolidated_jobs = consolidate_files(new_indeed_jobs, new_internsg_jobs, new_jobstreet_jobs, new_mycareerfuture, new_linkedin)
 
