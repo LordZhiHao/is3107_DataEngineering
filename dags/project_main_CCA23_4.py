@@ -173,13 +173,14 @@ def extract_transform_load():
 
         # drop unused columns
         data = data.drop(['Unnamed: 0', 'Job_ID', 'posted-time-ago', 'nb_candidats', 'scraping_date', 'posted_date'], axis=1)
-        
+
+        # drop unsuccessful retrievals
+        data = data.dropna()
+
         # perform splitting and checking for unexpected encodings
         data['Job_txt'] = data['Job_txt'].apply(lambda x : x.split('Report this job')[1].replace("â€™", "'"))
         data['Job_txt'] = data['Job_txt'].apply(lambda x : x.split('Show more Show less')[0])
 
-        # drop unsuccessful retrievals
-        data = data.dropna()
         return data
     
     @task
