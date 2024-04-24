@@ -12,15 +12,17 @@ st.write('Welcome to the Singapore Job Market Insights Web Application! Get pers
 st.divider()
 
 # Function for loading data from the database
-def load_data(load_file_path='test.csv'):
+def load_data(load_file_path):
     select_table_query = """SELECT * FROM consolidatedJobs"""
-    conn = psycopg2.connect(database="is3107JobsDB", user='is3107Postgres', password='JobsDBProject3107', host='is3107.postgres.database.azure.com', port='5432')
+    conn = psycopg2.connect(database="is3107JobsDB", user='is3107Postgres', password='JobsDBProject3107', host='is3107.postgres.database.azure.com', port= '5432')
     conn.autocommit = True
     cursor = conn.cursor()
     cursor.execute(select_table_query)
     result = cursor.fetchall()
-    conn.close()
-    colnames = ['job_title', 'description', 'company', 'salary_range']
+    print(result)
+    conn.commit()
+    conn.close()        
+    colnames = ['job_title', 'description', 'company', 'salary_range', 'url']
     pd.DataFrame(result, columns=colnames).to_csv(load_file_path)
     return pd.DataFrame(result, columns=colnames)
 
