@@ -27,14 +27,14 @@ def load_data(load_file_path):
         pd.DataFrame(result, columns=colnames).to_csv(load_file_path)
         return pd.DataFrame(result, columns=colnames)
 
-def preprocess_company_name(name):
-    name = name.lower().strip()  
-    return name
+def preprocess_job_title(title):
+    title = title.strip()  
+    return title
 
 def map_company_name(name):
     company_mapping = {
-        'Shopee': 'shopee singapore private limited',
-        'tiktok': 'tiktok pte. ltd.',
+        'SHOPEE SINGAPORE PRIVATE LIMITED': 'Shopee',
+        'TIKTOK PTE. LTD.': 'TikTok',
     }
     return company_mapping.get(name, name) 
 
@@ -76,6 +76,9 @@ def display_dashboard_page():
     #Load data from the database
     job_data = load_data('database.csv')
 
+    # Preprocess and map company names
+    job_data['company'] = job_data['company'].apply(map_company_name)
+
     st.header('Top 10 Companies Hiring')
     st.subheader('Explore the leading employers in Singapore')
 
@@ -90,6 +93,9 @@ def display_dashboard_page():
         height=400
     )
     st.altair_chart(chart, use_container_width=True)
+
+    # Preprocess job titles
+    job_data['job_title'] = job_data['job_title'].apply(preprocess_job_title)
 
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
