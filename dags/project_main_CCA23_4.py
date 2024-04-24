@@ -97,14 +97,18 @@ def extract_transform_load():
     @task
     def clean_jobstreet_jobs(jobstreet_path):
         
-        data = pd.read_csv(jobstreet_path)
+        data = pd.read_csv(jobstreet_path, encoding='utf-8')
 
         data['teasers'] = data['teasers'].apply(lambda x: re.sub(r'[^\x00-\x7F]+', ' ', x))
-        data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')
+
+        data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')  # Replace 'p.m.' with 'per month'
+        data['salaries'] = data['salaries'].str.replace('[^\x00-\x7F]+', '-')  # Remove special characters
+        data['salaries'] = data['salaries'].apply(lambda x: '$' + str(x) if str(x).isdigit() else x)  # Add $ symbol to numeric values
+
         data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
 
         new_file_path = 'jobstreet_jobs_modified.csv'
-        data.to_csv(new_file_path, index=False)
+        data.to_csv(new_file_path, index=False, encoding='utf-8')
 
         return new_file_path
     
