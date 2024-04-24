@@ -22,7 +22,7 @@ def load_data(load_file_path):
         cursor = conn.cursor()
         cursor.execute(select_table_query)
         result = cursor.fetchall()
-        print(result)
+        # print(result)
         conn.commit()
         conn.close()        
         colnames = ['job_title', 'description', 'company', 'salary_range', 'url']

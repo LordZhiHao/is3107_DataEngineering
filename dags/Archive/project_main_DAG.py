@@ -27,7 +27,7 @@ def load_csv(consolidated_file_path):
     except:
         return pd.DataFrame({'job_title':['test1'], 'description':['test1'], 'company':['test1'], 'salary_range':['test1']})
 
-@dag(dag_id='3107_project', schedule_interval=None, catchup=False, tags=['project'])
+@dag(dag_id='3107_project_past2', schedule_interval=None, catchup=False, tags=['project'])
 def extract_transform_load():
 
     @task
