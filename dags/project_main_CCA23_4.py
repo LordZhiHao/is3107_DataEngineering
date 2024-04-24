@@ -95,6 +95,20 @@ def extract_transform_load():
         return file_path
     
     @task
+    def clean_jobstreet_jobs(jobstreet_url):
+        
+        data = pd.read_csv(jobstreet_url)
+
+        data['teasers'] = data['teasers'].apply(lambda x: x.encode('latin').decode('unicode_escape'))
+        data['salaries'] = data['salaries'].str.replace('â€“', '-')
+        data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
+
+        new_file_path = 'jobstreet_jobs_modified.csv'
+        data.to_csv(new_file_path, index=False)
+
+        return new_file_path
+    
+    @task
     def extract_mycareerfuture_jobs():
         file_path = "MyCareersFuture_WebScraping/jobs_ai.csv"
         return file_path
