@@ -216,6 +216,7 @@ def extract_transform_load():
     internsg_jobs = extract_internsg_jobs()
 
     jobstreet_jobs = extract_jobstreet_jobs()
+    jobstreet_jobs = clean_jobstreet_jobs(jobstreet_jobs)
 
     mycareerfuture_jobs =  extract_mycareerfuture_jobs()
     mycareerfuture_jobs = clean_mycareerfuture_jobs(mycareerfuture_jobs)
