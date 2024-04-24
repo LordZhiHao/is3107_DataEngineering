@@ -2,6 +2,8 @@ import streamlit as st
 import time
 import pandas as pd
 import psycopg2
+import matplotlib.pyplot as plt 
+import altair as alt 
 
 # Set the title of the web app
 st.title('Singapore Job Market Insights')
@@ -24,6 +26,17 @@ def load_data(load_file_path):
         colnames = ['job_title', 'description', 'company', 'salary_range', 'url']
         pd.DataFrame(result, columns=colnames).to_csv(load_file_path)
         return pd.DataFrame(result, columns=colnames)
+
+def preprocess_company_name(name):
+    name = name.lower().strip()  
+    return name
+
+def map_company_name(name):
+    company_mapping = {
+        'Shopee': 'shopee singapore private limited',
+        'tiktok': 'tiktok pte. ltd.',
+    }
+    return company_mapping.get(name, name) 
 
 jobs_data = load_data('database.csv')
 
@@ -60,29 +73,52 @@ def display_dashboard_page():
     st.title('Dashboard')
     st.write('Visualisations and insights about the Singapore job market.')
 
-    st.header('Job Trends')
-    st.subheader('Explore the latest job trends in Singapore')
+    #Load data from the database
+    job_data = load_data('database.csv')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    st.header('Top 10 Companies Hiring')
+    st.subheader('Explore the leading employers in Singapore')
 
-    st.header('Skill Demand')
-    st.subheader('Discover in-demand skills across industries')
+    # Top 10 Companies
+    top_10_companies = job_data['company'].value_counts().head(10).sort_values(ascending=True)
+    top_10_companies_df = pd.DataFrame({'Company': top_10_companies.index, 'Number of Job Postings': top_10_companies.values})
 
-    # Add visualizations and insights on job trends
-    # ... 
+    chart = alt.Chart(top_10_companies_df).mark_bar().encode(
+        y=alt.Y('Company:N', sort='-x'),
+        x='Number of Job Postings:Q'
+    ).properties(
+        height=400
+    )
+    st.altair_chart(chart, use_container_width=True)
 
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    # Most Common 15 Job Titles
+    job_title_counts = job_data['job_title'].value_counts().head(15).reset_index()
+    job_title_counts.columns = ['Job Title', 'Count']
+
+    chart = alt.Chart(job_title_counts).mark_bar().encode(
+        y=alt.Y('Job Title:N', sort='-x'),
+        x='Count:Q'
+    ).properties(
+        height=400
+    )
+    st.altair_chart(chart, use_container_width=True)
 
     st.header('Salary Ranges')
     st.subheader('Explore salary ranges across different industries')
 
-    # Add visualizations and insights on job trends
-    # ... 
+    salary_ranges = job_data['salary_range'].value_counts().head(15).reset_index()
+    salary_ranges.columns = ['Salary Range', 'Count']
+
+    chart = alt.Chart(salary_ranges).mark_bar().encode(
+        y=alt.Y('Salary Range:N', sort='-x'),
+        x='Count:Q'
+    ).properties(
+        height=400
+    )
+    st.altair_chart(chart, use_container_width=True)
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
