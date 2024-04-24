@@ -103,6 +103,8 @@ def display_dashboard_page():
     # Preprocess job titles
     job_data['job_title'] = job_data['job_title'].apply(preprocess_job_title)
 
+    st.divider()
+
     st.header('Popular Job Titles')
     st.subheader('Find out the most popular job titles in Singapore')
 
@@ -118,6 +120,8 @@ def display_dashboard_page():
     )
     st.altair_chart(chart, use_container_width=True)
 
+    st.divider()
+
     st.header('Salary Ranges')
     st.subheader('Explore salary ranges across different industries')
 
@@ -132,6 +136,23 @@ def display_dashboard_page():
         height=400
     )
     st.altair_chart(chart, use_container_width=True)
+
+    st.divider()
+
+    st.header('Custom Tailor Analysis')
+    st.subheader('Visualize specific company and job title')
+
+    job_data['company'] = job_data['company'].apply(map_company_name)
+
+    # Create dropdown for selecting company
+    selected_company = st.selectbox('Select Company', job_data['company'].unique())
+    filtered_data = job_data[job_data['company'] == selected_company]
+
+    # Create dropdown for selecting job title
+    selected_job_title = st.selectbox('Select Job Title', filtered_data['job_title'].unique())
+    filtered_data = filtered_data[filtered_data['job_title'] == selected_job_title]
+
+    st.write(filtered_data)
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
