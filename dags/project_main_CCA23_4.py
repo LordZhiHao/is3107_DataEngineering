@@ -99,8 +99,8 @@ def extract_transform_load():
         
         data = pd.read_csv(jobstreet_path)
 
-        data['teasers'] = data['teasers'].apply(lambda x: x.encode('latin').decode('unicode_escape'))
-        data['salaries'] = data['salaries'].str.replace('â€“', '-')
+        data['teasers'] = data['teasers'].apply(lambda x: html.unescape(x))
+        data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')
         data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
 
         new_file_path = 'jobstreet_jobs_modified.csv'
