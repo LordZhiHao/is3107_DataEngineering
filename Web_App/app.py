@@ -107,7 +107,7 @@ def display_dashboard_page():
     st.subheader('Find out the most popular job titles in Singapore')
 
     # Most Common 15 Job Titles
-    job_title_counts = job_data['job_title'].value_counts().head(15).reset_index()
+    job_title_counts = job_data['job_title'].value_counts().head(10).reset_index()
     job_title_counts.columns = ['Job Title', 'Count']
 
     chart = alt.Chart(job_title_counts).mark_bar().encode(
@@ -121,7 +121,7 @@ def display_dashboard_page():
     st.header('Salary Ranges')
     st.subheader('Explore salary ranges across different industries')
 
-    salary_ranges = job_data['salary_range'].value_counts().head(15).reset_index()
+    salary_ranges = job_data['salary_range'].value_counts().head(10).reset_index()
     salary_ranges.columns = ['Salary Range', 'Count']
     salary_ranges = salary_ranges[salary_ranges['Salary Range'] != 'Null']
 
