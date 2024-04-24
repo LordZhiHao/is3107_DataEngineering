@@ -91,13 +91,13 @@ def extract_transform_load():
          
     @task
     def extract_jobstreet_jobs():
-        file_path = "JobStreet_WebScraping/jobstreet_jobs_data.csv"
-        return file_path
+        jobstreet_path = "JobStreet_WebScraping/jobstreet_jobs_data.csv"
+        return jobstreet_path
     
     @task
-    def clean_jobstreet_jobs(jobstreet_url):
+    def clean_jobstreet_jobs(jobstreet_path):
         
-        data = pd.read_csv(jobstreet_url)
+        data = pd.read_csv(jobstreet_path)
 
         data['teasers'] = data['teasers'].apply(lambda x: x.encode('latin').decode('unicode_escape'))
         data['salaries'] = data['salaries'].str.replace('â€“', '-')
