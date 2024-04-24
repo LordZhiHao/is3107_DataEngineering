@@ -167,20 +167,47 @@ def display_dashboard_page():
     # Preprocess and map company names
     job_data['company'] = job_data['company'].apply(map_company_name)
 
-    # Create multi-select dropdown for selecting companies
-    selected_companies = st.multiselect('Select Companies', job_data['company'].unique())
+    # Check for cases where two or more companies have the same job title and salary is not null
+    duplicate_job_salary_data = job_data[(job_data.duplicated(subset=['job_title', 'salary_range'], keep=False)) & (job_data['salary_range'] != 'Null') ]
 
-    if len(selected_companies) > 0:
-        # Filter data based on selected companies
-        filtered_data = job_data[job_data['company'].isin(selected_companies)]
+    if not duplicate_job_salary_data.empty:
+        st.warning("There are cases where two or more companies have the same job title and non-null salary.")
+        st.write(duplicate_job_salary_data)
 
-        # Group data by job title and concatenate salary ranges for each job title
-        salary_ranges_by_job_title = filtered_data.groupby('job_title')['salary_range'].apply(lambda x: ', '.join(x)).reset_index()
+        # Filter unique job titles and companies from the reference table
+        unique_job_titles = duplicate_job_salary_data['job_title'].unique()
+        unique_companies = duplicate_job_salary_data['company'].unique()
 
-        # Display salary ranges for each job title
-        st.write(salary_ranges_by_job_title)
+        # Create multi-select dropdowns for selecting companies and job titles
+        selected_companies = st.multiselect('Select Companies', unique_companies)
+        selected_job_titles = st.multiselect('Select Job Titles', unique_job_titles)
+
+        if len(selected_companies) > 0 and len(selected_job_titles) > 0:
+            # Filter data based on selected companies and job titles
+            filtered_data = duplicate_job_salary_data[
+                (duplicate_job_salary_data['company'].isin(selected_companies)) & 
+                (duplicate_job_salary_data['job_title'].isin(selected_job_titles))
+            ]
+            
+            # Display filtered data
+            st.write(filtered_data)
+
+            # Add filters for the displayed table
+            st.subheader("Table Filters:")
+            filters = {}
+            for column in filtered_data.columns:
+                filter_value = st.text_input(f"Filter by {column}", key=f"{column}_filter")
+                if filter_value:
+                    filters[column] = filter_value
+            if filters:
+                filtered_table = filtered_data.copy()
+                for column, value in filters.items():
+                    filtered_table = filtered_table[filtered_table[column].str.contains(value, case=False)]
+                st.write(filtered_table)
+        else:
+            st.write('Please select at least one company and one job title.')
     else:
-        st.write('Please select at least one company.')
+        st.success("No cases found where two or more companies have the same job title and non-null salary.")
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
