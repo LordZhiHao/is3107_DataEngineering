@@ -99,7 +99,7 @@ def extract_transform_load():
         
         data = pd.read_csv(jobstreet_path)
 
-        data['teasers'] = data['teasers'].apply(lambda x: html.unescape(x))
+        data['teasers'] = data['teasers'].apply(lambda x: re.sub(r'[^\x00-\x7F]+', ' ', x))
         data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')
         data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
 
