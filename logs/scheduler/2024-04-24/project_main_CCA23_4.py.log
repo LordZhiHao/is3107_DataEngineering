@@ -1,0 +1,91 @@
+[2024-04-24T08:07:04.982+0800] {processor.py:161} INFO - Started process (PID=1024217) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:07:04.984+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:07:04.987+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:07:04.986+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:07:09.640+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:07:13.295+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:07:13.293+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:07:13.313+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:07:13.311+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:07:13.470+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 8.507 seconds
+[2024-04-24T08:16:04.478+0800] {processor.py:161} INFO - Started process (PID=1029162) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:16:04.481+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:16:04.486+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:16:04.483+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:16:10.195+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:16:10.387+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:16:10.385+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:16:10.409+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:16:10.408+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:16:10.553+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 6.098 seconds
+[2024-04-24T08:19:08.287+0800] {processor.py:161} INFO - Started process (PID=1030872) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:19:08.289+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:19:08.294+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:19:08.292+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:19:12.956+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:19:13.203+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:19:13.201+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:19:13.234+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:19:13.231+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:19:13.370+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 5.102 seconds
+[2024-04-24T08:20:57.673+0800] {processor.py:161} INFO - Started process (PID=1031890) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:20:57.676+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:20:57.680+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:20:57.678+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:21:02.484+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:21:02.721+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:21:02.719+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:21:02.746+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:21:02.744+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:21:02.888+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 5.233 seconds
+[2024-04-24T08:24:03.424+0800] {processor.py:161} INFO - Started process (PID=1033601) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:24:03.426+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:24:03.428+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:24:03.427+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:24:07.037+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:24:07.095+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:24:07.093+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:24:07.112+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:24:07.111+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:24:07.207+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 3.795 seconds
+[2024-04-24T08:25:15.000+0800] {processor.py:161} INFO - Started process (PID=1034335) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:25:15.002+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:25:15.005+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:25:15.004+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:25:18.892+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:25:18.949+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:25:18.947+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:25:18.974+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:25:18.971+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:25:19.107+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.120 seconds
+[2024-04-24T08:26:21.436+0800] {processor.py:161} INFO - Started process (PID=1034943) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:26:21.438+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:26:21.440+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:26:21.439+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:26:25.380+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:26:25.440+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:26:25.439+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:26:25.467+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:26:25.466+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:26:25.618+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.192 seconds
+[2024-04-24T08:27:22.997+0800] {processor.py:161} INFO - Started process (PID=1035574) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:27:23.000+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:27:23.003+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:27:23.002+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:27:27.161+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:27:27.210+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:27:27.209+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:27:27.231+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:27:27.229+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:27:27.334+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.355 seconds
+[2024-04-24T08:28:24.656+0800] {processor.py:161} INFO - Started process (PID=1036168) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:28:24.659+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:28:24.662+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:28:24.661+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:28:28.381+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:28:28.442+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:28:28.441+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:28:28.458+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:28:28.456+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:28:28.562+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 3.922 seconds
+[2024-04-24T08:29:24.407+0800] {processor.py:161} INFO - Started process (PID=1036755) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:29:24.409+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:29:24.412+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:29:24.411+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:29:28.810+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:29:28.868+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:29:28.866+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:29:28.892+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:29:28.890+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:29:28.991+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.596 seconds
+[2024-04-24T08:30:26.396+0800] {processor.py:161} INFO - Started process (PID=1037356) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:30:26.398+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:30:26.401+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:30:26.399+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:30:30.523+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:30:30.580+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:30:30.577+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:30:30.605+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:30:30.603+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:30:30.693+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.312 seconds
+[2024-04-24T08:31:29.189+0800] {processor.py:161} INFO - Started process (PID=1037963) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:31:29.192+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:31:29.195+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:31:29.193+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:31:33.378+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:31:33.439+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:31:33.437+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:31:33.459+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:31:33.457+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:31:33.578+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 4.401 seconds
+[2024-04-24T08:32:34.148+0800] {processor.py:161} INFO - Started process (PID=1038571) to work on /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:32:34.150+0800] {processor.py:830} INFO - Processing file /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py for tasks to queue
+[2024-04-24T08:32:34.152+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:32:34.151+0800] {dagbag.py:540} INFO - Filling up the DagBag from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:32:37.768+0800] {processor.py:840} INFO - DAG(s) '3107_project' retrieved from /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py
+[2024-04-24T08:32:37.821+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:32:37.820+0800] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-04-24T08:32:37.838+0800] {logging_mixin.py:188} INFO - [2024-04-24T08:32:37.836+0800] {dag.py:3954} INFO - Setting next_dagrun for 3107_project to None, run_after=None
+[2024-04-24T08:32:37.953+0800] {processor.py:183} INFO - Processing /mnt/c/Users/Jason/Desktop/IS3107/is3107_DataEngineering/dags/project_main_CCA23_4.py took 3.814 seconds
