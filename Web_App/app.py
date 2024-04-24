@@ -35,6 +35,12 @@ def map_company_name(name):
     company_mapping = {
         'SHOPEE SINGAPORE PRIVATE LIMITED': 'Shopee',
         'TIKTOK PTE. LTD.': 'TikTok',
+        'Hays Specialist Recruitment Pte Ltd': 'Hays',
+        'ComfortDelGro Transportation': 'Comfort Transportation Pte Ltd',
+        'THE SOFTWARE PRACTICE PTE. LTD.': 'The Software Practice',
+        'Univers Pte Ltd': 'Univers',
+        'PERSOLKELLY SINGAPORE PTE. LTD.': 'PERSOLKELLY',
+        'PERSOLKELLY Singapore': 'PERSOLKELLY'
     }
     return company_mapping.get(name, name) 
 
@@ -117,6 +123,7 @@ def display_dashboard_page():
 
     salary_ranges = job_data['salary_range'].value_counts().head(15).reset_index()
     salary_ranges.columns = ['Salary Range', 'Count']
+    salary_ranges = salary_ranges[salary_ranges['Salary Range'] != 'Null']
 
     chart = alt.Chart(salary_ranges).mark_bar().encode(
         y=alt.Y('Salary Range:N', sort='-x'),
