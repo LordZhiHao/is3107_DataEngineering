@@ -10,24 +10,36 @@ from time import sleep
 from random import randint
 
 from datetime import datetime, timedelta
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+from airflow.providers.postgres.hooks.postgres import PostgresHook
+import psycopg2
 from airflow.models import TaskInstance
 from airflow.utils.state import State
 from airflow.decorators import dag, task
 from datetime import datetime
+
+def load_csv(consolidated_file_path):
+    try:
+        df = pd.read_csv(consolidated_file_path)
+        df = df.fillna("Null")
+        return df
+    except:
+        return pd.DataFrame({'job_title':['test1'], 'description':['test1'], 'company':['test1'], 'salary_range':['test1']})
 
 @dag(dag_id='3107_project', schedule_interval=None, catchup=False, tags=['project'])
 def extract_transform_load():
 
     @task
     def extract_indeed_jobs():
-        indeed_jobs_url = r"/Users/jett/Desktop/indeed_jobs_raw.csv"
+        indeed_jobs_url = r"Indeed_WebScraping/indeed_jobs_raw.csv"
         return indeed_jobs_url
 
     @task
     def clean_indeed_jobs(indeed_jobs_url):
         data = pd.read_csv(indeed_jobs_url)
+
+        data.dropna(subset=['Job Title'], inplace=True)
 
         # Remove additional text of -job post in Job Title Col
         for index, row in data.iterrows():
@@ -52,7 +64,7 @@ def extract_transform_load():
 
         # To indicate the listing date from posted date information
         # Convert text to datetime for manipulation 
-        data['Today Date'] = pd.to_datetime(data['Today Date'], format='%d/%m/%Y')
+        data['Today Date'] = pd.to_datetime(data['Today Date'], format='%d/%m/%y')
 
         # Convert 'Today Date' to string with 'day/month/year' format
         data['Today Date'] = data['Today Date'].dt.strftime('%d/%m/%Y')
@@ -69,6 +81,7 @@ def extract_transform_load():
         # Convert 'Job Posting Date' column to datetime dtype
         data['Job Posting Date'] = pd.to_datetime(data['Job Posting Date'], format='%d/%m/%Y')
 
+
         new_file_path = 'indeed_jobs_modified.csv'
         data.to_csv(new_file_path, index=False)
 
@@ -76,17 +89,17 @@ def extract_transform_load():
 
     @task
     def extract_internsg_jobs():
-        file_path = r'/Users/jett/Desktop/internSG_jobs.csv'
+        file_path = "InternSg_WebScraping/internSG_jobs.csv"
         return file_path
          
     @task
     def extract_jobstreet_jobs():
-        file_path = r'/Users/jett/Desktop/jobstreet_jobs_data.csv'
+        file_path = "JobStreet_WebScraping/jobstreet_jobs_data.csv"
         return file_path
     
     @task
     def extract_mycareerfuture_jobs():
-        file_path = r'/Users/jett/Desktop/mycareerfuture_jobs.csv'
+        file_path = "MyCareersFuture_WebScraping/jobs_ai.csv"
         return file_path
     
     @task
@@ -94,26 +107,25 @@ def extract_transform_load():
         data = pd.read_csv(mycareerfuture_url)
 
         data['Salary'] = data['salary_lower'].astype(str) + "-" + data['salary_upper'].astype(str) + " " + data['salary_period']
-        new_file_path = 'mycareerfuture_jobs_modified.csv'
+        new_file_path = 'mycareersfuture_jobs_modified.csv'
         data.to_csv(new_file_path, index = False)
 
         return new_file_path
 
     @task
     def extract_linkedin_jobs():
-        file_path = r'/Users/jett/Desktop/linkedin_jobs.csv'
+        file_path = "LinkedIn_WebScraping/linkedin_jobs.csv"
         return file_path
-
     
     @task
     def rename_and_filter_columns(df_file_path):
 
         mapping = {
-            "job title": ["Designation", "Job Title", "titles", "title", "job_title"],
-            "description": ["Job Description", "teasers", "description", "job_description"],
+            "job title": ["Designation", "Job Title", "titles", "title", "job_title", 'job-title'],
+            "description": ["Job Description", "teasers", "description", "job_description", 'Job_txt'],
             "company": ["Company", "companies", "company", "company_name"],
             "salary range": ["Allowance / Remuneration", "Salary", "salaries"],
-            "url": ["URL", "link"]
+            "url": ["URL", "link", 'url']
         }
 
         # Extract the file name
@@ -161,27 +173,54 @@ def extract_transform_load():
         consolidated_df.to_csv(new_file_path, index = False)
 
         return new_file_path
+    
+    # add load database
+    @task 
+    def upload_data(file_path):
+        postgres_hook = PostgresHook(postgres_conn_id="postgres_azurehost")
+        df = load_csv(file_path)
+        print('{} rows loaded ...'.format(len(df)))
+        truncate_sql = """TRUNCATE TABLE consolidatedJobs;"""
+        postgres_hook.run(truncate_sql, autocommit=True)
+        print('previous data truncated ...')
+        load_sql = """
+        INSERT INTO consolidatedJobs (job_title, description, company, salary_range, url)
+        VALUES (%(job_title)s, %(description)s, %(company)s, %(salary_range)s, %(url)s);
+        """
+        for idx, row in df.head().iterrows():
+            row_entry = {
+            'job_title': row['job title'],
+            'description': row['description'],
+            'company': row['company'],
+            'salary_range': row['salary range'],
+            'url': row['url']
+            }
+            # Use the Airflow PostgresHook to execute the SQL
+            postgres_hook.run(load_sql, parameters=row_entry, autocommit=True)
+        print('{} rows of data uploaded ...'.format(len(df)))
 
-    #indeed_jobs = extract_indeed_jobs()
-    #indeed_jobs = clean_indeed_jobs(indeed_jobs)
+    indeed_jobs = extract_indeed_jobs()
+    indeed_jobs = clean_indeed_jobs(indeed_jobs)
 
-    #internsg_jobs = extract_internsg_jobs()
+    internsg_jobs = extract_internsg_jobs()
 
-    #jobstreet_jobs = extract_jobstreet_jobs()
+    jobstreet_jobs = extract_jobstreet_jobs()
 
     mycareerfuture_jobs =  extract_mycareerfuture_jobs()
     mycareerfuture_jobs = clean_mycareerfuture_jobs(mycareerfuture_jobs)
 
-    #linkedin_jobs = extract_linkedin_jobs()
+    linkedin_jobs = extract_linkedin_jobs()
 
 
-    #new_indeed_jobs = rename_and_filter_columns(indeed_jobs)
-    #new_internsg_jobs =  rename_and_filter_columns(internsg_jobs)
-    #new_jobstreet_jobs = rename_and_filter_columns(jobstreet_jobs)
+    new_indeed_jobs = rename_and_filter_columns(indeed_jobs)
+    new_internsg_jobs =  rename_and_filter_columns(internsg_jobs)
+    new_jobstreet_jobs = rename_and_filter_columns(jobstreet_jobs)
     new_mycareerfuture = rename_and_filter_columns(mycareerfuture_jobs)
-    #new_linkedin = rename_and_filter_columns(linkedin_jobs)
+    new_linkedin = rename_and_filter_columns(linkedin_jobs)
 
 
-    #consolidated_jobs = consolidate_files(new_indeed_jobs, new_internsg_jobs, new_jobstreet_jobs, new_mycareerfuture, new_linkedin)
+    consolidated_jobs = consolidate_files(new_indeed_jobs, new_internsg_jobs, new_jobstreet_jobs, new_mycareerfuture, new_linkedin)
+
+    upload_data(consolidated_jobs)
 
 dag = extract_transform_load()
