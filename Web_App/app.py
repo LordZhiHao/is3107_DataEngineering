@@ -208,29 +208,29 @@ def map_company_name(name):
 
     return company_mapping.get(name, name)
 
-# Generate skill patterns
-file_txt = open("Skills_in_Demand.txt", 'r', encoding='cp1252')
-list_skills_in_demand = []
-for x in file_txt.readlines():
-    list_skills_in_demand.append(x.strip())
-file_txt.close()
+# # Generate skill patterns
+# file_txt = open("Skills_in_Demand.txt", 'r', encoding='cp1252')
+# list_skills_in_demand = []
+# for x in file_txt.readlines():
+#     list_skills_in_demand.append(x.strip())
+# file_txt.close()
 
-rule_patterns = []
-for skill in list_skills_in_demand:
-    pattern = []
-    for elt in skill.split(" "):
-        pattern.append({"LOWER": elt})
+# rule_patterns = []
+# for skill in list_skills_in_demand:
+#     pattern = []
+#     for elt in skill.split(" "):
+#         pattern.append({"LOWER": elt})
         
-    json_data = {"label": "SKILL", "pattern": pattern}
-    json_string = json.dumps(json_data, ensure_ascii=True)
-    rule_patterns.append(json_string)
+#     json_data = {"label": "SKILL", "pattern": pattern}
+#     json_string = json.dumps(json_data, ensure_ascii=True)
+#     rule_patterns.append(json_string)
 
-file_jsonl = open("Skill_patterns.jsonl", "w")
-for pattern in rule_patterns:
-    file_jsonl.write(pattern + "\n")
-file_jsonl.close()
+# file_jsonl = open("Skill_patterns.jsonl", "w")
+# for pattern in rule_patterns:
+#     file_jsonl.write(pattern + "\n")
+# file_jsonl.close()
 
-print("Skill patterns JSONL file created!")
+# print("Skill patterns JSONL file created!")
 
 # Load skill patterns
 skill_pattern_path = "Skill_patterns.jsonl"
