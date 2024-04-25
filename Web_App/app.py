@@ -74,10 +74,14 @@ def display_job_recommendation_page():
             # Run ML model to process user input and return job results
             recommended_jobs = recommend_jobs(resume_details, jobs_data, tfidf_matrix, tfidf_vectorizer)
 
-            # Display job recommendations to the user
-            st.write("Job recommendations retrieved successfully!")
-            st.write(recommended_jobs) 
+            st.markdown("---")
 
+            # Display job recommendations to the user
+            if recommended_jobs.empty:
+                st.write("No job recommendations found.")
+            else:
+                st.write("Job recommendations retrieved successfully!")
+                st.write(recommended_jobs) 
 
 # Function for displaying dashboard page
 def display_dashboard_page():
@@ -144,16 +148,38 @@ def display_dashboard_page():
 
     st.divider()
 
-    st.header('Custom Tailor Analysis')
-    st.subheader('Visualize specific company and job title')
+    st.header('Customised Company View')
+    st.subheader('View specific company job listings')
 
     job_data['company'] = job_data['company'].apply(map_company_name)
 
     # Create dropdown for selecting company
-    selected_company = st.selectbox('Select Company', job_data['company'].unique())
-    filtered_data = job_data[job_data['company'] == selected_company]
+    selected_company = st.selectbox('Select Company', ['All'] + list(job_data['company'].unique()))
 
-    st.write(filtered_data)
+    # Placeholder for job title dropdown
+    job_title_placeholder = st.empty()
+
+    if selected_company != 'All':
+        # Filter job data based on selected company
+        filtered_job_data = job_data[job_data['company'] == selected_company]
+
+        # Get job titles corresponding to the selected company
+        available_job_titles = filtered_job_data['job_title'].unique()
+
+        # Create dropdown for selecting job title
+        selected_job_title = job_title_placeholder.selectbox('Select Job Title', ['All'] + list(available_job_titles))
+
+        # Filter data based on selected job title
+        if selected_job_title != 'All':
+            filtered_data = filtered_job_data[filtered_job_data['job_title'] == selected_job_title]
+        else:
+            filtered_data = filtered_job_data
+
+        # Display filtered data
+        st.write(filtered_data)
+
+    else:
+        st.write("Please select a company to see available job titles.")
 
     st.divider()
 
