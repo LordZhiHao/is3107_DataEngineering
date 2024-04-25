@@ -7,6 +7,13 @@ import altair as alt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+import numpy as np
+import json
+import spacy
+from spacy.pipeline import EntityRuler
+from spacy.cli import download
+from wordcloud import WordCloud
+
 # Set the title of the web app
 st.title('Singapore Job Market Insights')
 
@@ -199,6 +206,24 @@ def map_company_name(name):
 
     return company_mapping.get(name, name)
 
+nlp = spacy.load("en_core_web_lg")
+
+# Function to extract skills from job descriptions
+def extract_skills(description):
+    doc = nlp(description)
+    skills = []
+    for ent in doc.ents:
+        if ent.label_ == "SKILL":
+            skills.append(ent.text.lower())
+    return skills
+
+# Function to generate word cloud from extracted skills
+def generate_word_cloud(df):
+    skills_list = df['description'].apply(extract_skills).explode().tolist()
+    skills_list = [str(skill) for skill in skills_list]
+    wordcloud = WordCloud(background_color='white').generate(' '.join(skills_list))
+    st.image(wordcloud.to_array(), caption='Skills Word Cloud')
+
 jobs_data = load_data()
 
 # Text preprocessing
@@ -336,8 +361,8 @@ def display_dashboard_page():
 
     st.divider()
 
-    st.header('Comparison Section')
-    st.subheader('Compare salary information for common job titles across different companies')
+    st.header('Salary Range Comparison')
+    st.subheader('Explore and compare salary information across different companies')
 
     # Preprocess and map company names
     job_data['company'] = job_data['company'].apply(map_company_name)
@@ -369,6 +394,12 @@ def display_dashboard_page():
             st.write('Please select a job title.')
     else:
         st.success("No comparison cases available.")
+
+    st.divider()
+
+    st.header('Skills Overview')
+    st.subheader('Word Cloud displaying skills demand')
+    generate_word_cloud(job_data) 
 
 
 # Create navigation sidebar
