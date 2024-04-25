@@ -331,8 +331,8 @@ def display_dashboard_page():
 
     st.divider()
 
-    st.header('Popular Job Titles')
-    st.subheader('Find out the most popular job titles in Singapore')
+    st.header('In-demand Jobs')
+    st.subheader('Find out the most in-demand jobs in Singapore')
 
     # Most Common 15 Job Titles
     job_title_counts = job_data['job_title'].value_counts().head(10).reset_index()
