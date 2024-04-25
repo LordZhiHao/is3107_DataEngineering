@@ -436,14 +436,12 @@ def display_dashboard_page():
 
     st.divider()
 
-    # For wordcloud
-    job_data["skills"] = job_data["description"].apply(extract_skills)
-
     st.header('Skills Overview')
     st.subheader('Word Cloud displaying skills demand')
-    generate_word_cloud(job_data) 
 
-    st.divider()
+    # For wordcloud
+    job_data["skills"] = job_data["description"].apply(extract_skills)
+    generate_word_cloud(job_data) 
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
