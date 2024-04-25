@@ -434,6 +434,8 @@ def display_dashboard_page():
     else:
         st.success("No comparison cases available.")
 
+    st.divider()
+
     # For wordcloud
     job_data["skills"] = job_data["description"].apply(extract_skills)
 
