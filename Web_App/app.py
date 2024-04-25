@@ -206,9 +206,37 @@ def map_company_name(name):
 
     return company_mapping.get(name, name)
 
+# Generate skill patterns
+file_txt = open("Skills_in_Demand.txt", 'r', encoding='cp1252')
+list_skills_in_demand = []
+for x in file_txt.readlines():
+    list_skills_in_demand.append(x.strip())
+file_txt.close()
+
+rule_patterns = []
+for skill in list_skills_in_demand:
+    pattern = []
+    for elt in skill.split(" "):
+        pattern.append({"LOWER": elt})
+        
+    json_data = {"label": "SKILL", "pattern": pattern}
+    json_string = json.dumps(json_data, ensure_ascii=True)
+    rule_patterns.append(json_string)
+
+file_jsonl = open("Skill_patterns.jsonl", "w")
+for pattern in rule_patterns:
+    file_jsonl.write(pattern + "\n")
+file_jsonl.close()
+
+print("Skill patterns JSONL file created!")
+
+# Load skill patterns
+skill_pattern_path = "Skill_patterns.jsonl"
 nlp = spacy.load("en_core_web_lg")
 
-# Function to extract skills from job descriptions
+ruler = nlp.add_pipe("entity_ruler")
+ruler.from_disk(skill_pattern_path)
+
 def extract_skills(description):
     doc = nlp(description)
     skills = []
@@ -217,12 +245,23 @@ def extract_skills(description):
             skills.append(ent.text.lower())
     return skills
 
-# Function to generate word cloud from extracted skills
 def generate_word_cloud(df):
-    skills_list = df['description'].apply(extract_skills).explode().tolist()
-    skills_list = [str(skill) for skill in skills_list]
-    wordcloud = WordCloud(background_color='white').generate(' '.join(skills_list))
-    st.image(wordcloud.to_array(), caption='Skills Word Cloud')
+    # Filter out non-string values from skills_list
+    skills_list = [skill for skill in df['skills'].explode().tolist() if isinstance(skill, str)]
+    
+    # Join the filtered skills_list into a single string
+    list_skills = " ".join(skills_list)
+
+    wordcloud = WordCloud(background_color='black', max_words=100, width=800, height=400, max_font_size=250, collocations=False)
+    wordcloud.generate(list_skills)
+
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud.recolor(colormap="Blues"), interpolation='bilinear')
+    plt.axis("off")
+    plt.title(f"Skills in demand\n", size=20, weight='bold')
+
+    # Pass the figure explicitly to st.pyplot()
+    st.pyplot(plt)
 
 jobs_data = load_data()
 
@@ -326,12 +365,6 @@ def display_dashboard_page():
 
     st.divider()
 
-    st.header('Skills Overview')
-    st.subheader('Word Cloud displaying skills demand')
-    generate_word_cloud(job_data) 
-
-    st.divider()
-
     st.header('Customised Company View')
     st.subheader('View specific company job listings')
 
@@ -400,6 +433,15 @@ def display_dashboard_page():
             st.write('Please select a job title.')
     else:
         st.success("No comparison cases available.")
+
+    # For wordcloud
+    job_data["skills"] = job_data["description"].apply(extract_skills)
+
+    st.header('Skills Overview')
+    st.subheader('Word Cloud displaying skills demand')
+    generate_word_cloud(job_data) 
+
+    st.divider()
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
