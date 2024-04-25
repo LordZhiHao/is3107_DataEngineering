@@ -14,6 +14,8 @@ from spacy.pipeline import EntityRuler
 from spacy.cli import download
 from wordcloud import WordCloud
 
+st.set_page_config(layout="wide")
+
 # Set the title of the web app
 st.title('Singapore Job Market Insights')
 
@@ -270,7 +272,7 @@ tfidf_vectorizer = TfidfVectorizer(stop_words='english')
 tfidf_matrix = tfidf_vectorizer.fit_transform(jobs_data['description'])
 
 # Function to recommend jobs based on input text
-def recommend_jobs(input_text, df, tfidf_matrix, tfidf_vectorizer, top_n=3):
+def recommend_jobs(input_text, df, tfidf_matrix, tfidf_vectorizer, top_n=5):
     input_vector = tfidf_vectorizer.transform([input_text])
     cosine_similarities = cosine_similarity(input_vector, tfidf_matrix).flatten()
     related_jobs_indices = cosine_similarities.argsort()[:-top_n-1:-1]
