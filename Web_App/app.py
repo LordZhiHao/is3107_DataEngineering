@@ -15,7 +15,7 @@ st.write('Welcome to the Singapore Job Market Insights Web Application! Get pers
 
 st.divider()
 
-def load_data(load_file_path):
+def load_data():
         select_table_query = """SELECT * FROM consolidatedJobs"""
         conn = psycopg2.connect(database="is3107JobsDB", user='is3107Postgres', password='JobsDBProject3107', host='is3107.postgres.database.azure.com', port= '5432')
         conn.autocommit = True
@@ -26,7 +26,7 @@ def load_data(load_file_path):
         conn.commit()
         conn.close()        
         colnames = ['job_title', 'description', 'company', 'salary_range', 'url']
-        pd.DataFrame(result, columns=colnames).to_csv(load_file_path)
+        # pd.DataFrame(result, columns=colnames).to_csv(load_file_path)
         return pd.DataFrame(result, columns=colnames)
 
 def preprocess_job_title(title):
@@ -46,7 +46,7 @@ def map_company_name(name):
     }
     return company_mapping.get(name, name)
 
-jobs_data = load_data('database.csv')
+jobs_data = load_data()
 
 # Text preprocessing
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
@@ -85,7 +85,7 @@ def display_dashboard_page():
     st.write('Visualisations and insights about the Singapore job market.')
 
     #Load data from the database
-    job_data = load_data('database.csv')
+    job_data = load_data()
 
     # Preprocess and map company names
     job_data['company'] = job_data['company'].apply(map_company_name)
@@ -152,10 +152,6 @@ def display_dashboard_page():
     # Create dropdown for selecting company
     selected_company = st.selectbox('Select Company', job_data['company'].unique())
     filtered_data = job_data[job_data['company'] == selected_company]
-
-    # Create dropdown for selecting job title
-    selected_job_title = st.selectbox('Select Job Title', filtered_data['job_title'].unique())
-    filtered_data = filtered_data[filtered_data['job_title'] == selected_job_title]
 
     st.write(filtered_data)
 
