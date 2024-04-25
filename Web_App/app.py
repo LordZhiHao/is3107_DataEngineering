@@ -215,7 +215,7 @@ def recommend_jobs(input_text, df, tfidf_matrix, tfidf_vectorizer, top_n=3):
 
 # Function for displaying job recommendation page
 def display_job_recommendation_page():
-    st.title('Job Recommendation')
+    st.title('Job Recommendation   :computer:')
     st.write('Input your resume details and receive personalised job recommendations.')
 
     # For user to input resume details
@@ -238,7 +238,7 @@ def display_job_recommendation_page():
 
 # Function for displaying dashboard page
 def display_dashboard_page():
-    st.title('Dashboard')
+    st.title('Dashboard   :bar_chart:')
     st.write('Visualisations and insights about the Singapore job market.')
 
     #Load data from the database
