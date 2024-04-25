@@ -326,6 +326,12 @@ def display_dashboard_page():
 
     st.divider()
 
+    st.header('Skills Overview')
+    st.subheader('Word Cloud displaying skills demand')
+    generate_word_cloud(job_data) 
+
+    st.divider()
+
     st.header('Customised Company View')
     st.subheader('View specific company job listings')
 
@@ -394,13 +400,6 @@ def display_dashboard_page():
             st.write('Please select a job title.')
     else:
         st.success("No comparison cases available.")
-
-    st.divider()
-
-    st.header('Skills Overview')
-    st.subheader('Word Cloud displaying skills demand')
-    generate_word_cloud(job_data) 
-
 
 # Create navigation sidebar
 st.sidebar.title('Singapore Job Market Insights')
