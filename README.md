@@ -21,9 +21,9 @@ Repository for IS3107 project: **JobPulse**
 # Files
 
 ## Config files
-Standalone_admin_password.txt - password for local airflow 
-user_credentials .txt - credentials for LinkedIn account used for web scraping 
-credentials.py - stores the credentials for the PostGresSQL Database
+- Standalone_admin_password.txt - password for local airflow 
+- user_credentials.txt - credentials for LinkedIn account used for web scraping 
+- credentials.py - stores the credentials for the PostGresSQL Database
 
 ## Archive (outdated)
 - Back up store of older project artifacts
