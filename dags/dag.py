@@ -102,7 +102,7 @@ def extract_transform_load():
         data['teasers'] = data['teasers'].apply(lambda x: re.sub(r'[^\x00-\x7F]+', ' ', x))
 
         data['salaries'] = data['salaries'].str.replace('p.m.', 'per month')  # Replace 'p.m.' with 'per month'
-        data['salaries'] = data['salaries'].str.replace('[^\x00-\x7F]+', '-')  # Remove special characters
+        data['salaries'] = data['salaries'].str.replace('[^\x00-\x7F]+', '-')  # Remove special characters 
         data['salaries'] = data['salaries'].apply(lambda x: '$' + str(x) if str(x).isdigit() else x)  # Add $ symbol to numeric values
 
         data['dateposted'] = pd.to_datetime(data['dateposted']).dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -117,26 +117,6 @@ def extract_transform_load():
         file_path = "MyCareersFuture_WebScraping/combined_careersfuture_jobs.csv"
         return file_path
 
-    # @task
-    # def extract_mycareerfuture_jobs_1():
-    #     file_path = "MyCareersFuture_WebScraping/jobs_ai.csv"
-    #     return file_path
-
-    # @task
-    # def extract_mycareerfuture_jobs_2():
-    #     file_path = "MyCareersFuture_WebScraping/jobs_data-analytics.csv"
-    #     return file_path
-    
-    # @task
-    # def extract_mycareerfuture_jobs_3():
-    #     file_path = "MyCareersFuture_WebScraping/jobs_data-science.csv"
-    #     return file_path
-    
-    # @task
-    # def extract_mycareerfuture_jobs_4():
-    #     file_path = "MyCareersFuture_WebScraping/jobs_ml.csv"
-    #     return file_path
-
     @task
     def clean_mycareerfuture_jobs(mycareerfuture_url):
         data = pd.read_csv(mycareerfuture_url)
@@ -146,30 +126,6 @@ def extract_transform_load():
         data.to_csv(new_file_path, index = False)
 
         return new_file_path
-
-    # @task
-    # def consolidate_mycareerfuture_jobs(mycareerfuture_filepath1, mycareerfuture_filepath2, mycareerfuture_filepath3, mycareerfuture_filepath4):
-    #     # read the files
-    #     df1 = pd.read_csv(mycareerfuture_filepath1)
-    #     df2 = pd.read_csv(mycareerfuture_filepath2)
-    #     df3 = pd.read_csv(mycareerfuture_filepath3)
-    #     df4 = pd.read_csv(mycareerfuture_filepath4)
-        
-    #     mycareerfuture_jobs = pd.DataFrame(columns=df1.columns)
-
-    #     # perform concatenation
-    #     mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df1], ignore_index=True)
-    #     mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df2], ignore_index=True)
-    #     mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df3], ignore_index=True)
-    #     mycareerfuture_jobs = pd.concat([mycareerfuture_jobs, df4], ignore_index=True)
-
-    #     # proof check for duplicates
-    #     mycareerfuture_jobs = mycareerfuture_jobs.drop_duplicates()
-
-    #     # return new file path
-    #     new_file_path = '{}_modified.csv'.format('mycareerfuture_jobs')
-    #     mycareerfuture_jobs.to_csv(new_file_path, index=False)
-    #     return new_file_path
 
     @task
     def clean_linkedin_jobs(linkedin_filepath):
@@ -291,6 +247,8 @@ def extract_transform_load():
         directory_path = os.path.dirname(df1)
         new_file_path = os.path.join(directory_path, 'consolidated.csv')
         consolidated_df = consolidated_df[consolidated_df['description'].notnull()]
+        consolidated_df = consolidated_df.drop_duplicates()
+        consolidated_df['description'] = consolidated_df['description'].str.replace("â€™", "'")
         consolidated_df.to_csv(new_file_path, index = False)
 
         return new_file_path
